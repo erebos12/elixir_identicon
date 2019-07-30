@@ -7,9 +7,15 @@ defmodule Identicon do
    end
 
    def build_grid(%Identicon.Image{hex: hex} = image) do
-      hex
-      |> Enum.chunk_every(3, 3, :discard)
-      |> mirror_row
+      grid =
+         hex
+         |> Enum.chunk_every(3, 3, :discard)
+         # passing a reference of a function (here mirror_row) to a function (here to map)
+         |> Enum.map(&mirror_row/1)
+         |> List.flatten #  no nested structure, so make it a flat list
+         |> Enum.with_index # getting index for each element in the flat list
+
+      %Identicon.Image{image | grid: grid}
    end
 
    def mirror_row(row) do
