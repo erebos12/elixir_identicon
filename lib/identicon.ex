@@ -4,6 +4,14 @@ defmodule Identicon do
     |> hash_input
     |> pick_color
     |> build_grid
+    |> filter_odd_sqares
+   end
+
+   def filter_odd_sqares(%Identicon.Image{grid: grid} = image) do
+      grid = Enum.filter grid, fn({code, _index}) ->
+         rem(code, 2) == 0 # rem == modulo function
+      end
+      %Identicon.Image{image | grid: grid}
    end
 
    def build_grid(%Identicon.Image{hex: hex} = image) do
@@ -19,9 +27,9 @@ defmodule Identicon do
    end
 
    def mirror_row(row) do
-      # [145, 56, 200]
+      # INPUT: [145, 56, 200]
       [first, second | _] = row
-      # [145, 56, 200, 56, 145]
+      # OUTPUT: [145, 56, 200, 56, 145]
       row ++ [second, first]
    end
 
