@@ -59,7 +59,7 @@ defmodule Identicon do
 
    def mirror_row(row) do
       # INPUT: [145, 56, 200]
-      [first, second | _] = row
+      [first, second | _] = row # "| _" means ignore the rest of the list
       # OUTPUT: [145, 56, 200, 56, 145]
       row ++ [second, first]
    end
